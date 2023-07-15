@@ -1,0 +1,98 @@
+* {
+  font-family: 'VT323', monospace;
+}
+
+html {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;  
+}
+
+input {
+  width: 500px;  
+  letter-spacing: .1rem;
+  border-radius: 8px;
+  border: 1.3px solid lightgray;
+  text-indent: 8px;
+  height: 25px;
+}
+
+input:focus {
+  outline: none;
+  border-color: gray;
+  box-shadow: 0 0 10px lightgray;
+}
+
+input:hover {
+  outline: none;
+  border-color: gray;
+  box-shadow: 0 0 10px lightgray;
+  transition: .3s;
+}
+
+.button {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  width: 100px;
+  cursor: pointer;
+  background-color: rgb(242, 241, 241);
+  border: 1px solid white;  
+  border-radius: 8px;
+  height: 25px;
+}
+
+button:hover {
+  width: 100px;
+  cursor: pointer;
+  background-color: rgb(242, 241, 241);
+  border: 1px solid lightgray;
+  box-shadow: 0 0 2px lightgray;
+  border-radius: 8px;
+}
+
+body {
+  width: 100%;
+  margin-bottom: 20vh;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  position: fixed;
+  bottom: 0;
+  height: 6%;
+  width: 100%;  
+}
+
+.footer a {
+  color: blue;
+}
+
+.linkToReadMe {
+  text-decoration: none;
+  font-size: 15px;
+  margin: 10px 10px;
+}
+
+.linkToReadMe:hover {
+  text-decoration: none;
+  font-size: 15px;
+  margin-right: 10px;
+  transform: scale(1.05);
+  transition: all .2s ease-in ;
+}
