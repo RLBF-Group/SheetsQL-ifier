@@ -7,7 +7,7 @@
     "start": "nodemon server/server.js",
     "client": "webpack-dev-server --mode development --open --hot",
     "build": "webpack --mode production",
-    "dev": " nodemon ./server/server.js & webpack-dev-server "
+    "dev": " nodemon ./server/server.js & webpack-dev-server --mode development"
   },
   "keywords": [],
   "author": "",
