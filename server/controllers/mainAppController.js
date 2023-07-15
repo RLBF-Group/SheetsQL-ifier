@@ -61,6 +61,7 @@ mainAppController.execTerminal = (req, res, next) => {
             console.error(`exec error: ${error}`)
             return next();
         }
+        res.locals.database = stdout
         console.log(`stdout: ${stdout}`);
         console.error(`stderr: ${stderr}`);
     });

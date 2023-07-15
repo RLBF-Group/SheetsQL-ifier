@@ -5,7 +5,7 @@ const router = express.Router();
 const mainAppController = require('../controllers/mainAppController');
 
 router.get('/', mainAppController.execTerminal, (req, res) => {
-    return res.status(200).send(res.locals.rowData);
+    return res.status(200).send(res.locals.database);
 })
 
 
