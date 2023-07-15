@@ -1,0 +1,34 @@
+{
+  "message": "Google API error - [403] The caller does not have permission",
+  "name": "AxiosError",
+  "stack": "AxiosError: Google API error - [403] The caller does not have permission\n    at settle (/home/peter/Work/codesmith/scratch-project/node_modules/axios/dist/node/axios.cjs:1909:12)\n    at Unzip.handleStreamEnd (/home/peter/Work/codesmith/scratch-project/node_modules/axios/dist/node/axios.cjs:2989:11)\n    at Unzip.emit (node:events:525:35)\n    at endReadableNT (node:internal/streams/readable:1359:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)",
+  "config": {
+    "transitional": {
+      "silentJSONParsing": true,
+      "forcedJSONParsing": true,
+      "clarifyTimeoutError": false
+    },
+    "adapter": ["xhr", "http"],
+    "transformRequest": [null],
+    "transformResponse": [null],
+    "timeout": 0,
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+    "maxContentLength": null,
+    "maxBodyLength": null,
+    "env": {},
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer ya29.c.b0Aaekm1LzxCEo-Xj_UKyaVadLfBKYPEXo5CTw_bcNTDsdtIIvANYk_WuApmn0aIELZg8u2MvWOnl1SS2nSg1MhY8ynqJQMtRwLNE1SFl8A61IH7pwdn73hfxHu59vmQ_Qu6WdJ0lmti8Dgo6vAAww7R8CixiB1BXfH4gM-z1eqp0nMkYAJGzbN3wqHPLawglUrGL8mHExQUDb7PzTlnTzScfZaB63HoX1EM3b9panwjbxTmksALsrGBhvAyf0HqHnSBu4KqYOUiiz1ssD4oXteGUue9mKLj7uAYFMxWhTIoYfrTZ1foUwzxzmuSbIwtKmQ2GvPxXr7KET340Dekknv9IokYywv_3F9wqrrcnV-bghvktYrRmy2aJwvzyXpW55gh87Yq7VvmyMzJQuMSXejYF31_5nkr9cYdxWlol7rh7-0ejhccUpZVfBfdkuxlzgkdvJ6evZiz6_35j5dynekf3tq-j9hcowede-O2FOvpBd4y3lupuwai3fV2Qzsij6zgcmtcjV89XRstZy8XueXF9eR0m-9-0f80JxumMBSrddyi_Mle95ys1ZJMbXxBSaIQcZzge58Md35X6ooVUy99q2785oWufhtZ-RF88hafZM6bhSuBdq5bUQJ2SX496Q3-9iu98u_u8mF_7gfrp8x1yvp-wouqOe7_Wx5xfmmVVyX5Rv4Jm9aynWIlZZk8z5t5tQV0ug5gyMcJ6jfiJScwdY05Ri0n2keO0Bew5jFRF0q29agRYBVh1hqWdQeJZJwkdVy7yks04XaZ1iF7rkhZhbB-7ckxb5Va0BU2Bmtghka4SzpziSQvnJnXsM-73xbWuSVo0Fq1YY6F7JXsn9WBtFwe3JWoM1FJFtJktYxcr45tBvgryFdmqir9fWc96UZu1J3WSOrhrUtMIB22XF6vzt47MtZ4b95ks6pXs1SpgqZqs2ez-cFomf-Bmj8aFQhSoJ8gwfRqlacrp_3U279U70OIesjjhB4p2pZp0nlm4xkMaUfZdQqXU",
+      "User-Agent": "axios/1.4.0",
+      "Accept-Encoding": "gzip, compress, deflate, br"
+    },
+    "baseURL": "https://sheets.googleapis.com/v4/spreadsheets/1MI9j-m1jouEMF7GlQ7NF__569_tbCHGRmKaHRtlBRBM",
+    "paramsSerializer": {},
+    "params": {},
+    "method": "get",
+    "url": "/"
+  },
+  "code": "ERR_BAD_REQUEST",
+  "status": 403
+}

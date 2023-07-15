@@ -30,13 +30,8 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-<<<<<<< HEAD
-            presets: [
-              ['@babel/preset-env', { targets: "defaults" }]
-=======
             presets: ['@babel/preset-env', '@babel/preset-react'],
           },
->>>>>>> origin
         },
       },
       {
