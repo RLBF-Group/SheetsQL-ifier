@@ -4,8 +4,8 @@ const router = express.Router();
 //REQUIRE CONTROLLERS
 const mainAppController = require('../controllers/mainAppController');
 
-router.get('/', mainAppController.(req, res) => {
-    return res.status(200).send('some object');
+router.get('/', mainAppController.execTerminal, (req, res) => {
+    return res.status(200).send(res.locals.rowData);
 })
 
 

@@ -11,7 +11,7 @@ const colNames = []
 
 mainAppController.getSheet = (req, res, next) => {
 
-
+    //parse our input data
     function parse(data) {
         const rows = data.sheets[0].data[0].rowData; //[{ value: [{ celldata }, {}, ..] }, { second row }, { third row } ...]
         rows.forEach(row => {
