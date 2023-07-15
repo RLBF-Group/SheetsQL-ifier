@@ -17,6 +17,9 @@ module.exports = {
       // match the output 'publicPath'
       publicPath: '/',
     },
+    compress: true,
+    port: 8080,
+    historyApiFallback: true,
     proxy: {
       '/api': 'http://localhost:1111',
     },
@@ -29,6 +32,9 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          },
         },
       },
       {
