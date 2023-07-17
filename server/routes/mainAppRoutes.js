@@ -8,8 +8,5 @@ router.get('/', mainAppController.execTerminal, (req, res) => {
     return res.status(200).send(res.locals.database);
 })
 
-
-
 //export router
 module.exports = router;
-
