@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const app = express();
-// const mainAppRouter = require('./routes/mainAppRoutes');
+//const mainAppRouter = require('./routes/mainAppRoutes');
 const gSheetsRouter = require('./routes/gSheetsRoutes.js');
 
 const { google } = require('googleapis');
@@ -45,7 +45,7 @@ app.use(authorize);
 
 //route handler
 app.use('/api', gSheetsRouter);
-// app.use('/', mainAppRouter);
+//app.use('/', mainAppRouter);
 // app.get('/', (req, res) => {
 //   res.status(200).send('Big');
 // });
@@ -55,9 +55,14 @@ app.use('*', (req, res) => res.sendStatus(404));
 
 //global error handler
 app.use((err, req, res, next) => {
-  const errorStatus = err.status || 500;
-  const errorLog = err.log;
-  return res.status(errorStatus).send(`err: ${err.log}`);
+  const defaultErr = {
+    log: 'Express error handler caught unknown middleware error',
+    status: 500,
+    message: { err: 'An error occurred' },
+  };
+  const errorObj = Object.assign({}, defaultErr, err);
+  console.log(errorObj.log);
+  return res.status(errorObj.status).json(errorObj.message);
 });
 
 app.listen(PORT, async () => {
