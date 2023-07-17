@@ -6,25 +6,25 @@ const sqlController = {};
 const fsCallback = require('fs');
 const path = require('path');
 
-const tableName = 'peopleInJapan';
+const tableName = 'peopleInTibet';
 let colNames = [];
 primaryKey = 'id';
 
 sqlController.createTable = (req, res, next) => {
   // const {primaryKey} = req.body
   //get item from each row in that position
-  const matrixTranspose = (matrix) => {
-    const transposed = [];
+  // const matrixTranspose = (matrix) => {
+  //   const transposed = [];
 
-    for (let i = 0; i < matrix[0].length; i++) {
-      const row = [];
-      for (let j = 0; j < matrix.length; j++) {
-        row.push(matrix[i][j]);
-      }
-      transposed.push(row);
-    }
-    return transposed;
-  };
+  //   for (let i = 0; i < matrix[0].length; i++) {
+  //     const row = [];
+  //     for (let j = 0; j < matrix.length; j++) {
+  //       row.push(matrix[i][j]);
+  //     }
+  //     transposed.push(row);
+  //   }
+  //   return transposed;
+  // };
   // [
   //     ["id", "name"],
   //     ["1", "q"],
@@ -47,25 +47,25 @@ sqlController.createTable = (req, res, next) => {
       //console.log(data)
       const sheet = JSON.parse(data).data.values;
       console.log('sheet:', sheet);
-      const reversedSheet = matrixTranspose(sheet);
+      //const reversedSheet = matrixTranspose(sheet);
       // [
       //     ["id", "1", "2"],
       //     ["name", "q", "w"]
       //
       // ]
 
-      console.log('reveredSheet:', sheet);
-      for (let col = 0; col < reversedSheet.length; col++) {
-        if (reversedSheet[col][0] === primaryKey) {
-          if (
-            new Set(reversedSheet[col][0].slice(1)).size !==
-            reversedSheet[col][0].slice(1).length
-          ) {
-            console.log('primary key not unique');
-            return;
-          }
-        }
-      }
+      // console.log('reveredSheet:', reversedSheet);
+      // for (let col = 0; col < reversedSheet.length; col++) {
+      //   if (reversedSheet[col][0] === primaryKey) {
+      //     if (
+      //       new Set(reversedSheet[col][0].slice(1)).size !==
+      //       reversedSheet[col][0].slice(1).length
+      //     ) {
+      //       console.log('primary key not unique');
+      //       return;
+      //     }
+      //   }
+      // }
       // res.locals.characters = parsedData.results;
       // return next();
 
@@ -139,6 +139,6 @@ sqlController.createTable = (req, res, next) => {
     }
   );
 };
-sqlController.createTable();
+
 
 module.exports = sqlController;

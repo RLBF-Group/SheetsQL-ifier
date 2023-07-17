@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const app = express();
-const mainAppRouter = require('./routes/mainAppRoutes');
+// const mainAppRouter = require('./routes/mainAppRoutes');
 const gSheetsRouter = require('./routes/gSheetsRoutes.js');
 
 const { google } = require('googleapis');
@@ -45,7 +45,7 @@ app.use(authorize);
 
 //route handler
 app.use('/api', gSheetsRouter);
-app.use('/', mainAppRouter);
+// app.use('/', mainAppRouter);
 // app.get('/', (req, res) => {
 //   res.status(200).send('Big');
 // });
