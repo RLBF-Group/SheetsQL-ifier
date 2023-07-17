@@ -4,7 +4,7 @@ const SqlDatabaseUrl = ({formData, setFormData}) => {
   return (
     <div>
       <input 
-        placeholder='SQL Database URL'
+        placeholder='postgres://...'
         value={formData.sqlDatabaseUrl}
         onChange = {e => {
           setFormData({ ...formData, sqlDatabaseUrl: e.target.value} )
