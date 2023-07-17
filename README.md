@@ -3,7 +3,8 @@ Welcome to the Google Sheets to SQL app.
 
 The purpose of this app is to take a spread sheet from google sheets and import them to a SQL database.This idealy will 
 make it easier for anyone who has this app to quickly add changes to the database without having write alot of code.
-Currently only the adding a new table works.
+Currently only adding a new table works.However hopefully your team can add new features that makes this an even better project.
+
 
 
 In order to use this app there are few steps need for your intial set - up.
@@ -33,5 +34,5 @@ The Instruction for which can be found here:
 
     Make sure any spread sheet you use is enable so that anyone with a link can edit.
 
-
+You will also need a sql database to send the data to.
 
