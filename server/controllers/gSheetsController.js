@@ -28,9 +28,14 @@ gSheetsController.testGetData = async (req, res, next) => {
   }
 };
 
-gSheetsController.getDataFromRange = async (req, res, next) => {
+const getIdFromUrl = url => {
+  const reg = /\/d\/(.*?)\//;
+  return url.match(reg)[1];
+};
+
+gSheetsController.getData = async (req, res, next) => {
   const { dataRange: range, googleSheetsUrl } = req.body;
-  const spreadsheetId = '';
+  const spreadsheetId = getIdFromUrl(googleSheetsUrl);
   const auth = res.locals.auth;
   try {
     let data;
@@ -40,15 +45,22 @@ gSheetsController.getDataFromRange = async (req, res, next) => {
         range,
         auth,
       };
-      data = sheets.spreadsheets.values.get(request);
+      data = await sheets.spreadsheets.values.get(request);
+      const titles = await sheets.spreadsheets.get({
+        spreadsheetId,
+        auth,
+        fields: 'properties(title),sheets.properties(title)',
+      });
+      data.data.titles = titles.data;
     } else {
       const request = {
         spreadsheetId,
         fields: fieldMask,
         auth,
       };
+      data = await sheets.spreadsheets.get(request);
     }
-    res.locals.data = data;
+    res.locals.data = data.data;
     return next();
   } catch (err) {
     return next(err);
