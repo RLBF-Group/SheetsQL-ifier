@@ -9,7 +9,7 @@ const sqlController = require('../controllers/sqlController');
 
 router.post(
   '/',
-  gSheetsController.testGetData,
+  gSheetsController.getData,
   sqlController.createTable,
   (req, res) => {
     return res.status(200).json(res.locals.sheetData);
