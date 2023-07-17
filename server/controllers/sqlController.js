@@ -9,21 +9,20 @@ const path = require('path');
 let colNames = [];
 
 sqlController.createTable = async (req, res, next) => {
-  const {primaryKey} = req.body
-  
+  let { primaryKey } = req.body;
+
   //get sheet from res.locals
-  const sheet = res.locals.data;
-  const tableName = 'peopleInAfrica'; //pending input from Peter
+  const sheet = res.locals.data.values;
   console.log('sheet:', sheet);
+  const tableName = res.locals.data.titles.sheets[0].properties.title; //pending input from Peter
+  console.log('tableName :', tableName);
 
   // assign primary key
-  if(!primaryKey) primaryKey = sheets[0][0];
- 
+  if (!primaryKey) primaryKey = sheet[0][0];
 
   //get length of rows and columns
   const numOfRows = sheet.length;
   const numOfCols = sheet[0].length;
- 
 
   // make $1, $2, $3... our conditional checks if we reached the end, if so we no longer need a comma
   let value = '';
@@ -36,9 +35,11 @@ sqlController.createTable = async (req, res, next) => {
 
   //grabs our column names
   colNames = sheet[0];
- 
+
   //insert values into respective columns
-  const text2 = `INSERT INTO ${tableName} (${colNames.join(',')}) VALUES (${value})`;
+  const text2 = `INSERT INTO ${tableName} (${colNames.join(
+    ','
+  )}) VALUES (${value})`;
   console.log('text2: ', text2);
 
   //assigns the type of values (varchar) that can be input into our columns
@@ -68,13 +69,15 @@ sqlController.createTable = async (req, res, next) => {
     } catch (err) {
       console.log(`invalid entry :${err}`);
       return next({
-        log:`sqlController.createTable: Error: ${err}`,
-        message: {err: 'Error in your controller. Check server logs for details'}
+        log: `sqlController.createTable: Error: ${err}`,
+        message: {
+          err: 'Error in your controller. Check server logs for details',
+        },
       });
-    } 
+    }
   }
   await queryDB();
-   return next();
+  return next();
 };
 
 module.exports = sqlController;

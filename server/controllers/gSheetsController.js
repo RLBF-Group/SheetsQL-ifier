@@ -16,12 +16,49 @@ gSheetsController.testGetData = async (req, res, next) => {
     // console.log(JSON.stringify(sheetData.sheet));
     res.locals.sheetData = sheetData;
     res.locals.data = {
-      "data": {
-          "values": [
-              ["id", "name"],
-              ["19", "q"],
-              ["20", "w"],
-              ["100", "e"]
+      "range": "Sheet1!A1:B6",
+      "majorDimension": "ROWS",
+      "values": [
+          [
+              "id",
+              "name"
+          ],
+          [
+              "21",
+              "b"
+          ],
+          [
+              "2",
+              "ewd"
+          ],
+          [
+              "3",
+              "edwd"
+          ],
+          [
+              "4",
+              "wed"
+          ],
+          [
+              "5",
+              "ewd"
+          ]
+      ],
+      "titles": {
+          "properties": {
+              "title": "test"
+          },
+          "sheets": [
+              {
+                  "properties": {
+                      "title": "Sheet1"
+                  }
+              },
+              {
+                  "properties": {
+                      "title": "Sheet2"
+                  }
+              }
           ]
       }
   }
