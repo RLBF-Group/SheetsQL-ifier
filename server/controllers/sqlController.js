@@ -5,8 +5,21 @@ const exec = require('child_process').exec;
 const sqlController = {};
 const fsCallback = require('fs');
 const path = require('path');
+const { Pool } = require('pg');
 
 let colNames = [];
+
+sqlController.linkDb = async (req, res, next) => {
+  const { sqlDatabaseUrl } = req.body;
+  const pool = new Pool({
+    connectionString: sqlDatabaseUrl,
+  });
+  res.locals.query = (text, params, callback) => {
+    console.log('executed query', text);
+    return pool.query(text, params, callback);
+  };
+  return next();
+};
 
 sqlController.createTable = async (req, res, next) => {
   let { primaryKey } = req.body;
@@ -61,10 +74,10 @@ sqlController.createTable = async (req, res, next) => {
 
   async function queryDB() {
     try {
-      const createTable = await db.query(text1);
+      const createTable = await res.locals.query(text1);
       //may need to slice out first element to get rid of our column name, leaving it as i+1 for now
       for (let i = 1; i < sheet.length; i++) {
-        await db.query(text2, sheet[i]);
+        await res.locals.query(text2, sheet[i]);
       }
     } catch (err) {
       console.log(`invalid entry :${err}`);
