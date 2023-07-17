@@ -6,10 +6,10 @@ const mainAppController = {};
 const fsCallback = require('fs');
 const path = require('path');
 
-const psqlCommand =
-  'psql -d <url from elephantSQL> -f googleapi_postgres_create.sql';
+// const psqlCommand =
+//   'psql -d <url from elephantSQL> -f googleapi_postgres_create.sql';
 
-const tableName = 'peopleInSS';
+const tableName = 'peopleInKOREA';
 let colNames = [];
 primaryKey = 'id';
 
@@ -94,9 +94,9 @@ fsCallback.readFile(
       try {
         const createTable = await db.query(text1);
         //may need to slice out first element to get rid of our column name, leaving it as i+1 for now
-        const insertTable = await matrix.forEach((ele, i) => {
-          db.query(text2, matrix[i + 1]);
-        });
+        for(let i = 1; i < matrix.length; i++) {
+          await db.query(text2, matrix[i]);
+        }
       } catch (err) {
         console.log(`invalid entry :${err}`);
       }
