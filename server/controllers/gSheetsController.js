@@ -20,6 +20,17 @@ gSheetsController.testGetData = async (req, res, next) => {
     console.log('collected sheetData');
     // console.log(JSON.stringify(sheetData.sheet));
     res.locals.sheetData = sheetData;
+    res.locals.data = {
+      "data": {
+          "values": [
+              ["id", "name"],
+              ["19", "q"],
+              ["20", "w"],
+              ["100", "e"]
+          ]
+      }
+  }
+  
     return next();
   } catch (err) {
     // big error
