@@ -4,9 +4,9 @@ const router = express.Router();
 //REQUIRE CONTROLLERS
 const mainAppController = require('../controllers/mainAppController');
 
-router.get('/', (req, res) => {
-  return res.status(200).send('some object');
-});
+router.get('/', mainAppController.execTerminal, (req, res) => {
+    return res.status(200).send(res.locals.database);
+})
 
 //export router
 module.exports = router;
