@@ -130,6 +130,7 @@ body {
 
 .pkcm {
   width: 250px;
+  margin: auto 2px;
 }
 
 .pageNumber {
@@ -138,4 +139,32 @@ body {
   align-items: center;
   font-size: smaller;
   margin-top: 15px;
+}
+
+.errorMessage {
+  position: absolute;
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 130px;
+}
+
+.submitSuccess {
+
+}
+
+.submitSuccess p {
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  color: rgb(25, 135, 84);
+  position: absolute;
+  margin-left: 190px;
+  height: 0px;
+  margin-top: -10px;
+}
+
+.submitSuccessHide p {
+  display: none;
 }

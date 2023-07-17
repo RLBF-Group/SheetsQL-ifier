@@ -7,7 +7,7 @@ const GoogleSheetsUrl = ({formData, setFormData}) => {
         // type="url"
         // name="googleSheetsUrl"
         // id="googleSheetsUrl"
-        placeholder='Google Sheets URL' 
+        placeholder='https://docs.google.com/spreadsheets/...' 
         value={formData.googleSheetsUrl}
         onChange={e => {          
           setFormData({ ...formData, googleSheetsUrl: e.target.value })
