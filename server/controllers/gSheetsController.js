@@ -56,7 +56,7 @@ gSheetsController.testGetData = async (req, res, next) => {
           "sheets": [
               {
                   "properties": {
-                      "title": "Sheet1"
+                      "title": "HAOHAO"
                   }
               },
               {
@@ -108,7 +108,7 @@ gSheetsController.getData = async (req, res, next) => {
       };
       data = await sheets.spreadsheets.get(request);
     }
-    res.locals.data = data.data;
+    res.locals.data =data.data;
     return next();
   } catch (err) {
     return next(err);

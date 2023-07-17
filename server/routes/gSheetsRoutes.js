@@ -6,9 +6,9 @@ const router = express.Router();
 const gSheetsController = require('../controllers/gSheetsController.js');
 const sqlController = require('../controllers/sqlController');
 
-router.get(
+router.post(
   '/',
-  gSheetsController.testGetData,
+  gSheetsController.getData,
   sqlController.createTable,
   (req, res) => {
     res.status(200).json(res.locals.sheetData);
