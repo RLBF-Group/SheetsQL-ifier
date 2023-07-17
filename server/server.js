@@ -31,7 +31,7 @@ app.get('/api/', async (req, res) => {
     });
     console.log('collected sheetData');
     console.log(JSON.stringify(sheetData));
-    fs.writeFileSync('./errDump.json', JSON.stringify(sheetData));
+    fs.writeFileSync('./errDump.json', JSON.stringify(err));
   } catch (err) {
     // big error
     fs.writeFileSync('./errDump.json', JSON.stringify(err));
