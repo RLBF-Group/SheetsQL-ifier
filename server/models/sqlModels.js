@@ -1,6 +1,8 @@
 const { Pool } = require('pg');
 
 //pg uri
+// static model URI for testing
+// (see sqlController.js for dynamic db creation)
 
 const PG_URI = 'postgres://lqibazmo:7utKiFijQkqYrjLCgbbsDtUrgSZC043n@stampy.db.elephantsql.com/lqibazmo';
 

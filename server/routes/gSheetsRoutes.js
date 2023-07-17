@@ -8,10 +8,11 @@ const sqlController = require('../controllers/sqlController');
 
 router.post(
   '/',
+  sqlController.linkDb,
   gSheetsController.getData,
   sqlController.createTable,
   (req, res) => {
-    res.status(200).json(res.locals.sheetData);
+    res.status(200).json(res.locals.data);
   }
 );
 
