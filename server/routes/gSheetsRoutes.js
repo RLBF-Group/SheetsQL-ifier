@@ -7,12 +7,12 @@ const router = express.Router();
 const gSheetsController = require('../controllers/gSheetsController.js');
 const sqlController = require('../controllers/sqlController');
 
-router.get(
+router.post(
   '/',
   gSheetsController.testGetData,
   sqlController.createTable,
   (req, res) => {
-    res.status(200).json(res.locals.sheetData);
+    return res.status(200).json(res.locals.sheetData);
   }
 );
 
