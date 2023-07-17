@@ -1,7 +1,11 @@
 const path = require('path');
 const express = require('express');
 
+
 const app = express();
+const express = require('express');
+const mainAppRouter = require('./routes/mainAppRoutes');
+const gSheetsRouter = require('./gSheetsRoutes.js');
 const express = require('express');
 const mainAppRouter = require('./routes/mainAppRoutes');
 const gSheetsRouter = require('./gSheetsRoutes.js');
@@ -13,11 +17,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //route handler
-app.use('/api/gsheets', gSheetsRouter);
-app.use('/api', mainAppRouter);
+app.use('/api', gSheetsRouter);
+app.use('/', mainAppRouter);
 // app.get('/', (req, res) => {
 //   res.status(200).send('Big');
 // });
+
+app.listen(PORT, () => {
+  console.log(`Server listening on port: ${PORT}...`);
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}...`);
@@ -32,5 +40,6 @@ app.use((err, req, res, next) => {
   const errorLog = err.log;
   return res.status(errorStatus).send(`err: ${err.log}`);
 });
+
 
 module.exports = app;
