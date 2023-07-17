@@ -3,15 +3,19 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const app = express();
-//const mainAppRouter = require('./routes/mainAppRoutes');
 const gSheetsRouter = require('./routes/gSheetsRoutes.js');
 
 const { google } = require('googleapis');
 const sheets = google.sheets('v4');
 const { GoogleAuth } = require('google-auth-library');
 
-let authCache;
+// AUTHORIZATION BLOCK
+let authCache; // holds auth client after the first time server authenticates
 
+// We authenticate using Application Default Credentials
+// See README for details about setting up your server for ADC
+// Make sure you place your service account credentials in a credentials.json file
+// in the /server directory. This file is ignored by git.
 async function authorize(req, res, next) {
   if (authCache) {
     console.log('cached authclient in res.locals.auth');
@@ -31,12 +35,13 @@ async function authorize(req, res, next) {
     authCache = authClient;
     return next();
   } catch (err) {
+    err.log =
+      'Unable to authorize with Application Default Credentials. Check credentials.json, and verify correct permissions in google cloud console.';
     return next(err);
   }
 }
 
 const PORT = 1111;
-//p
 
 //HANDLE parsing body
 app.use(express.json());
@@ -45,10 +50,6 @@ app.use(authorize);
 
 //route handler
 app.use('/api', gSheetsRouter);
-//app.use('/', mainAppRouter);
-// app.get('/', (req, res) => {
-//   res.status(200).send('Big');
-// });
 
 //route catch
 app.use('*', (req, res) => res.sendStatus(404));
