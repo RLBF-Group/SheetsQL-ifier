@@ -12,6 +12,159 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 
+
+-- function parse(data) {
+--     const rows = data.sheets[0].data[0].rowData; -- [{value: [{celldata}, {}, ..]}, {second row}, {third row} ...]
+--     rows.forEach(row => {
+--         const eachRow = [];
+--         row.values.forEach(cell => {
+--             eachRow.push(cell.userEnteredValue.stringValue);
+--             //console.log(cell.userEnteredValue.stringValue);
+
+--         });
+        
+
+--     })
+
+ 
+    -- var ss = SpreadsheetApp.openById(data.id);
+    -- var sheet = ss.getSheets()[0];
+    -- var rows = sheet.getDataRange().getValues();
+    -- var result = [];
+    -- for (var r = 1; r < rows.length; r++) {
+    --     var row = rows[r];
+    --     var record = {};
+    --     for (var c = 0; c < row.length; c++) {
+    --     record[rows[0][c]] = row[c];
+    --     }
+    --     result.push(record);
+    -- }
+    -- return result;
+}
+
+
+--Spreadsheets
+{
+  "spreadsheetId": string,
+  "properties": {
+    object (SpreadsheetProperties)
+  },
+  "sheets": [
+    {
+      object (Sheet)
+    }
+  ],
+  "namedRanges": [
+    {
+      object (NamedRange)
+    }
+  ],
+  "spreadsheetUrl": string,
+  "developerMetadata": [
+    {
+      object (DeveloperMetadata)
+    }
+  ],
+  "dataSources": [
+    {
+      object (DataSource)
+    }
+  ],
+  "dataSourceSchedules": [
+    {
+      object (DataSourceRefreshSchedule)
+    }
+  ]
+}
+
+
+-- sheet
+{
+  "properties": {
+    object (SheetProperties)
+  },
+  "data": [
+    {
+      object (GridData)
+    }
+  ],
+  "merges": [
+    {
+      object (GridRange)
+    }
+  ],
+  "conditionalFormats": [
+    {
+      object (ConditionalFormatRule)
+    }
+  ],
+  "filterViews": [
+    {
+      object (FilterView)
+    }
+  ],
+  "protectedRanges": [
+    {
+      object (ProtectedRange)
+    }
+  ],
+  "basicFilter": {
+    object (BasicFilter)
+  },
+  "charts": [
+    {
+      object (EmbeddedChart)
+    }
+  ],
+  "bandedRanges": [
+    {
+      object (BandedRange)
+    }
+  ],
+  "developerMetadata": [
+    {
+      object (DeveloperMetadata)
+    }
+  ],
+  "rowGroups": [
+    {
+      object (DimensionGroup)
+    }
+  ],
+  "columnGroups": [
+    {
+      object (DimensionGroup)
+    }
+  ],
+  "slicers": [
+    {
+      object (Slicer)
+    }
+  ]
+}
+
+-- grid data
+{
+  "startRow": integer,
+  "startColumn": integer,
+  "rowData": [
+    {
+      object (RowData)
+    }
+  ],
+  "rowMetadata": [
+    {
+      object (DimensionProperties)
+    }
+  ],
+  "columnMetadata": [
+    {
+      object (DimensionProperties)
+    }
+  ]
+}
+
+
 CREATE TABLE public.people (
 	"_id" serial NOT NULL,
 	"name" varchar NOT NULL,
