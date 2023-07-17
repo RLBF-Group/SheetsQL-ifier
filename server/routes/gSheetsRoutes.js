@@ -1,11 +1,13 @@
 const express = require('express');
+const fs = require('fs');
 const router = express.Router();
 
 //REQUIRE CONTROLLERS
+const gSheetsController = require('../controllers/gSheetsController.js');
 const mainAppController = require('../controllers/mainAppController');
 
-router.get('/', (req, res) => {
-  return res.status(200).send('some object');
+router.get('/', gSheetsController.testGetData, (req, res) => {
+  res.status(200).json(res.locals.sheetData);
 });
 
 //export router
