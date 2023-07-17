@@ -3,7 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const app = express();
+<<<<<<< HEAD
 //const mainAppRouter = require('./routes/mainAppRoutes');
+=======
+// const mainAppRouter = require('./routes/mainAppRoutes');
+>>>>>>> dev
 const gSheetsRouter = require('./routes/gSheetsRoutes.js');
 
 const { google } = require('googleapis');

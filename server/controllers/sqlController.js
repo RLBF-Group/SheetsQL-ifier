@@ -6,7 +6,6 @@ const sqlController = {};
 const fsCallback = require('fs');
 const path = require('path');
 
-
 let colNames = [];
 
 sqlController.createTable = async (req, res, next) => {
