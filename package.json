@@ -1,6 +1,6 @@
 {
-  "name": "scratch-project",
-  "version": "1.0.0",
+  "name": "iteration-project",
+  "version": "2.0.0",
   "description": "Welcome to the Google Sheets to SQL app.",
   "main": "index.js",
   "scripts": {
@@ -41,7 +41,6 @@
     "gapi-script": "^1.2.0",
     "google-auth-library": "^8.9.0",
     "googleapis": "^122.0.0",
-    "next-auth": "^4.22.3",
     "pg": "^8.11.1",
     "pg-format": "^1.0.4",
     "react": "^18.2.0",
