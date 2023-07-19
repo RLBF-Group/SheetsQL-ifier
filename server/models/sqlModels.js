@@ -1,12 +1,11 @@
+require('dotenv').config();
 const { Pool } = require('pg');
 
-//pg uri
-// static model URI for testing
+//Postgres static model URI for testing
+//stored in env
 // (see sqlController.js for dynamic db creation)
-const PG_URI = "postgres://qveexumj:2o4MNak11B7N78RFhwwC3ozXVyTvWqHQ@mahmud.db.elephantsql.com/qveexumj";
-
 const pool = new Pool({
-    connectionString: PG_URI
+    connectionString: process.env.PG_URI
 });
 
 module.exports = {
