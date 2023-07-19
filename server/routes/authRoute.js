@@ -5,6 +5,36 @@ const dotenv = require('dotenv').config();
 
 const authRouter = express.Router();
 
+
+
+//step 1 the initial get request from client to server
+// router.get('/', authController.initializeAuth, (req, res) => {
+// 	console.log('reached authentication router.get redirect');
+// 	//returns the link to the front end with the client id , scope, redirect uri, and state
+// 	return res.status(200).json(res.locals.reqAuthentication);
+// });
+
+
+
+// router.get(
+// 	'/callback',
+// 	authController.checkState,
+// 	//callback route which will verify that that state is not null and the continues, 
+// 	authController.getTokens,
+// 	//callback route which will verify that that state is not null and the continues, 
+// 	(req, res) => {
+// 	  console.log('acces token: ', res.locals.accessToken);
+// 	  console.log('refresh token: ', res.locals.refreshToken);
+// 	  console.log(
+// 		'options to pass into spotify api requests: ',
+// 		res.locals.options
+// 	  );
+// 	  return res.status(200).json(res.locals.accessToken);
+// 	}
+//   );
+
+
+
 const oauth2Client = new google.auth.OAuth2(
 	GOOGLE_CLIENT_ID,
 	GOOGLE_CLIENT_SECRET,
