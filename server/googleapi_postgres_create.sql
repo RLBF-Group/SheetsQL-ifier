@@ -40,7 +40,7 @@ SET row_security = off;
     --     result.push(record);
     -- }
     -- return result;
-}
+-- }
 
 
 --Spreadsheets
