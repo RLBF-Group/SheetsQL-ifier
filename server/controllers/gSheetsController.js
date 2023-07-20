@@ -96,7 +96,7 @@ gSheetsController.createSheet = async (req, res, next) => {
     const permission = {
       type: 'user',
       role: 'writer',
-      emailAddress: 'yukiokrause@gmail.com', // Please set the email address you want to give the permission.
+      emailAddress: 'LASH211@gmail.com', // Please set the email address you want to give the permission.
     };
     const permissionResponse = await drive.permissions.create({
       auth: auth, //adding this and now we have a different error "insufficient permission"
@@ -139,81 +139,83 @@ gSheetsController.createSheet = async (req, res, next) => {
 //populates sheet with DB data
 //at this point i think we can get the new sheet URL and next() the URL to the router
 gSheetsController.updateSheet = async (req, res, next) => {
+  console.log('entered update sheet')
   const auth = res.locals.auth;
-  console.log('this is auth', auth);
+const data = res.locals.value
+  
+const columnTitle = Object.keys(data[0])
+//console.log(columnTitle)
 
-  // var ss = SpreadsheetApp.openById(res.locals.sheetId);
-  // // Logger.log(ss.getName());
-  // ss.insertSheet('My New Sheet');
+const row0 = Object.values(data[0])
+//console.log(row0)
 
-  // The code below creates a new spreadsheet "Finances" with 50 rows and 5 columns and logs the
-  // URL for it
-  // var ssNew = SpreadsheetApp.create("Finances", 50, 5);
-  // Logger.log(ssNew.getUrl());
-  // const test = {};
-  // const data =  {[
-  //   {
-  //     majorDimension: 'COLUMNS',
-  //     range: 'Sheet1!A4:C4',
-  //     values: [['3'], ['OR3'], ['paid']],
-  //   },
-  // ],
-  // valueInputOption: 'USER_ENTERED',}
+const restOftable = [...columnTitle, ...row0]
 
-  //   const json = JSON.stringify(data)
-  //   console.log(json)
+for (let i = 1; i<data.length; i++ ){
+  restOftable.push(Object.values(data[i]))
+  // console.log('value of each row', Object.values(data[i]))
+}
+console.log('rt', restOftable)
 
-  // const request = {
-  //   // The spreadsheet to apply the updates to.
-  //   spreadsheetId: res.locals.sheetId, // TODO: Update placeholder value.
-  //   auth: auth,
-  //   resource: {
-  //     // A list of updates to apply to the spreadsheet.
-  //     // Requests will be applied in the order they are specified.
-  //     // If any request is not valid, no requests will be applied.
 
-  //       "updatedRange": "Sheet1!A4",
-  //       "updatedData": {
-  //         "range": "Sheet1!A4:C4",
-  //         "majorDimension": "ROWS"
+// column titles: peach	apple	orange	banana	kiwi
 
-  //     }
-  //     // // TODO: Add desired properties to the request body.
-  //   },
-  // };
-
-  // const request = {
-  //   spreadsheetId: '180Ir80nuDycvrQSYKbVJKdhGxTtM9DQ8M2HbxiJg5Ps',
-  //   auth: auth,
-  //   resource: {
-  //     data: [
-  //       {
-  //         updatedRange: 'Sheet1!A4',
-  //         updatedRows: 1,
-  //         updatedColumns: 1,
-  //         updatedCells: 1,
-  //         updatedData: {
-  //           range: 'Sheet1!A4:C4',
-  //           majorDimension: 'ROWS',
-  //           values: [['123423']],
-  //         },
-  //       },
-  //     ],
-  //   },
-  // };
-  const request = {
+const request = {
     spreadsheetId: '180Ir80nuDycvrQSYKbVJKdhGxTtM9DQ8M2HbxiJg5Ps',
-    updatedRange: 'Sheet1!A4',
-    updatedRows: 1,
-    updatedColumns: 1,
-    updatedCells: 1,
-    updatedData: {
-      range: 'Sheet1!A4:C4',
-      majorDimension: 'ROWS',
-      values: [['123423']],
+    resource: {
+      valueInputOption: 'RAW',
+      data: [
+        {
+          range: 'Sheet1!A1:E7', //required
+          majorDimension: 'ROWS',
+          values: restOftable
+        },
+      ],
     },
-    auth: authClient,
+    auth: auth,
   };
+
+  try {
+    const response = await sheets.spreadsheets.values.batchUpdate(request);
+    console.log(JSON.stringify(response.data, null, 2));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
+
+// // The code below creates a new spreadsheet "Finances" with 50 rows and 5 columns and logs the
+// // URL for it
+// var ssNew = SpreadsheetApp.create("Finances", 50, 5);
+// Logger.log(ssNew.getUrl());
+
+// async function main () {
+//   const authClient = await authorize();
+//   const request = {
+//     // The spreadsheet to apply the updates to.
+//     spreadsheetId: 'my-spreadsheet-id',  // TODO: Update placeholder value.
+
+//     resource: {
+//       // A list of updates to apply to the spreadsheet.
+//       // Requests will be applied in the order they are specified.
+//       // If any request is not valid, no requests will be applied.
+//       requests: [],  // TODO: Update placeholder value.
+
+//       // TODO: Add desired properties to the request body.
+//     },
+
+//     auth: authClient,
+//   };
+
+//   try {
+//     const response = (await sheets.spreadsheets.batchUpdate(request)).data;
+//     // TODO: Change code below to process the `response` object:
+//     console.log(JSON.stringify(response, null, 2));
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
 
   // {
   //   "spreadsheetId": "180Ir80nuDycvrQSYKbVJKdhGxTtM9DQ8M2HbxiJg5Ps",
@@ -253,51 +255,6 @@ gSheetsController.updateSheet = async (req, res, next) => {
   //   };
 
   // };
-  try {
-    // // Request
-    // Sheets.Spreadsheets.batchUpdate(batchReq, );
-    // const result = JSON.stringify(request);
-    const response = await sheets.spreadsheets.values.batchUpdate(request).data;
-    // TODO: Change code below to process the `response` object:
-
-    console.log(JSON.stringify(response, null, 2));
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-// // The code below creates a new spreadsheet "Finances" with 50 rows and 5 columns and logs the
-// // URL for it
-// var ssNew = SpreadsheetApp.create("Finances", 50, 5);
-// Logger.log(ssNew.getUrl());
-
-// async function main () {
-//   const authClient = await authorize();
-//   const request = {
-//     // The spreadsheet to apply the updates to.
-//     spreadsheetId: 'my-spreadsheet-id',  // TODO: Update placeholder value.
-
-//     resource: {
-//       // A list of updates to apply to the spreadsheet.
-//       // Requests will be applied in the order they are specified.
-//       // If any request is not valid, no requests will be applied.
-//       requests: [],  // TODO: Update placeholder value.
-
-//       // TODO: Add desired properties to the request body.
-//     },
-
-//     auth: authClient,
-//   };
-
-//   try {
-//     const response = (await sheets.spreadsheets.batchUpdate(request)).data;
-//     // TODO: Change code below to process the `response` object:
-//     console.log(JSON.stringify(response, null, 2));
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
-
 module.exports = gSheetsController;
 
 // Set range
