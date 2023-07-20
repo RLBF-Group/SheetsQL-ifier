@@ -51,6 +51,7 @@ export default function Callback() {
                 headers: {
                     'Content-Type': 'Application/JSON'
                 }
+                
             })
             const permission = await response.json();
 

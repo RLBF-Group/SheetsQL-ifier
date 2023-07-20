@@ -2,7 +2,7 @@ const express = require('express'); // Express web server framework
 //const request = require('request'); // "Request" library
 //const cors = require('cors');
 //const querystring = require('querystring');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 const { oauth2 } = require('googleapis/build/src/apis/oauth2');
@@ -31,7 +31,7 @@ require('dotenv').config();
 
 // ! SET REDIRECT URL TO 8080 TO RUN IN DEV MODE. CHANGE TO 3000 IF IN PRODUCTION
 
-// const stateKey = 'google_auth_state';
+const stateKey = 'google_auth_state';
 
 /**
  * Generates a random string containing numbers and letters
@@ -51,45 +51,57 @@ const generateRandomString = function (length) {
 	return text;
 };
 
-const authController = {
-
-};
+const authController = {};
 
 //this middleware function creates the oauth2 client as well as the url that will be used for the consent dialog
 
-
-authController.initializeAuth = async (req, res, next) => {
-	console.log('in authController createAuthUrl');
+authController.getOAuthClient = (req, res, next) => {
+	console.log('in authController getOathClient');
 	console.log(process.env.GOOGLE_CLIENT_ID);
 	console.log(process.env.GOOGLE_CLIENT_SECRET);
+	let store = [];
 	try {
-		//creates a new instance of a OAuth2 client
-		const oauth2Client = new google.auth.OAuth2(
-			process.env.GOOGLE_CLIENT_ID,
-			process.env.GOOGLE_CLIENT_SECRET,
-			'http://localhost:8080/callback'
-		);
+		if (!store[0]) {
+			const oauth2Client = new google.auth.OAuth2(
+				process.env.GOOGLE_CLIENT_ID,
+				process.env.GOOGLE_CLIENT_SECRET,
+				'http://localhost:8080/callback'
+			);
+			store.push(oauth2Client);
+		}
+		const client = store[0];
+		console.log(client);
+		res.locals.client = client;
 
+		next();
+	} catch (error) {
+		return next({
+			log: 'error in authController.getOauthClient: ',
+			message: {
+				error: 'An error occured while creating/fetching the oauth client',
+				error,
+			},
+		});
+	}
+};
+
+authController.generateAuthUrl = async (req, res, next) => {
+	try {
+		const oauth2Client = res.locals.client;
 		console.log(oauth2Client);
+
 		const scopes = 'https://www.googleapis.com/auth/spreadsheets';
 		const state = generateRandomString(16);
+		res.cookie(stateKey, state);
+		console.log('state', state);
+		console.log('cookie: ', res.cookie[stateKey]);
 
-		//generate a code_verifier and code_challenge
-		// const codes = await OAuth2Client.generateCodeVerifierAsync();
-		// console.log('the codes are ', codes);
-
-		//passes in an options object to generateAuthUrl
 		const authUrl = oauth2Client.generateAuthUrl({
 			//recommended: indicates whether your app can refresh access tokens when the user is not present at the browser.  default is 'online', 'offline' is if your app needs to refresh access tokens when user is not present at browser
 			access_type: 'offline', //gets a refresh token
 			//required: identify resources that pp can access on user's behalf
 			scope: scopes,
 			state: state,
-			// 	response_type: code,
-			// 	//when using generateCodeVerifierAsync, make sure to use code_challenge_method 'S256';
-			// 	code_challenge_method: 'S256',
-			// 	//pass along the generated code challenge
-			// 	code_challenge: codes.codeChallenge,
 		});
 
 		console.log('auth url is ', authUrl);
@@ -97,9 +109,9 @@ authController.initializeAuth = async (req, res, next) => {
 		next();
 	} catch (error) {
 		return next({
-			log: 'error in authController.createAuthUrl: ',
+			log: 'error in authController.generateAuthUrl: ',
 			message: {
-				error: 'An error occured while redirecting to Google ',
+				error: 'An error occured while creating auth url',
 				error,
 			},
 		});
@@ -107,48 +119,140 @@ authController.initializeAuth = async (req, res, next) => {
 };
 
 authController.handleCallback = async (req, res, next) => {
-	//let state = req.params.state;
-	let code = req.params.code;
-	console.log('Authorization code :', code);
+	// 	try {
+	// 		const state = req.query.state || null;
+	// 		console.log('state returned from spotify: ', state);
 
-	const { tokens } = await oAuth2Client.getToken(code);
-  oauth2Client.setCredentials(tokens);
+	// 		if (state === null || state !== storedState) {
 
+	try {
+		// const storedState = req.cookies ? req.cookies[stateKey] : null;
+		// const state = req.query.state || null;
+		// console.log(state);
+		// console.log(storedState);
+		// if (state === null || state !== storedState)
+		// 	return next({
+		// 		log: 'State did not match, error found',
+		// 		message: { error: 'An error occurred due to state mismatch' },
+		// 	});
 
-  google.options({ auth: oauth2Client });
+		const oauth2Client = res.locals.client;
+		console.log(oauth2Client);
+		console.log(req.query);
+		let code = req.query.code;
+		console.log('Authorization code :', code);
 
-		// const server = http
-		// 	.createServer(async (req, res) => {
-		// 		try {
-		// 			if (req.url.indexOf('/callback') > -1) {
-		// 				//acquire the authorization code on the request URL's search params object and extract the authorization code
-		// 				const qs = new URL(req.url, 'http://localhost:1111').searchParams;
-		// 				console.log('qs is ', qs);
-		// 				const code = qs.get('code');
-		// 				console.log('authorization code is ', code);
-		// 				//end response cycle and close the server
-		// 				//res.end('Authentication successful! Please return to the console.');
-		// 				server.destroy();
+		//!Wednesday night: this getToken is not working. when await is removed it properly console.logs a promise. once it did return the tokens outside of the deconstructed obj so i am assuming it has something to do with the number of requests in a span of time
+		const { tokens } = await oauth2Client.getToken(code);
 
-		// 				//use authorization code to acquire tokens from authorization endpoint, passing along the generated code verifier that will match our code challenge
-		// 				const tokens = await oauth2Client.getToken({
-		// 					code,
-		// 					//codeVerifier: codes.codeVerifier,
-		// 				});
+		//const { tokens } = await oauth2Client.getToken(code);
+		console.log(tokens);
+		//have not yet been able to test this. passing in tokens or tokens.tokens
+		oauth2Client.setCredentials(tokens);
+		console.log(oauth2Client.credentials);
 
-						//set the credentials(tokens) returned from the endpoint on the client
-						oauth2Client.setCredentials(tokens.tokens);
-						console.log(tokens);
-            res.locals.
-					}
-				} catch (error) {}
-			})
-			.listen(1111, () => {
-				opn(authUrl, { wait: false }).then((cp) => cp.unref());
-			});
-		destroyer(server);
-
+		res.locals.permission = 'granted';
+		next();
+	} catch (error) {
+		return next({
+			log: 'error in authController.handleCallback',
+			message: {
+				error: 'An error occured while handling callback',
+				error,
+			},
+		});
+	}
 };
+
+// authController.initializeAuth = async (req, res, next) => {
+// 	console.log('in authController createAuthUrl');
+// 	console.log(process.env.GOOGLE_CLIENT_ID);
+// 	console.log(process.env.GOOGLE_CLIENT_SECRET);
+// 	try {
+// 		//creates a new instance of a OAuth2 client
+// 		const oauth2Client = new google.auth.OAuth2(
+// 			process.env.GOOGLE_CLIENT_ID,
+// 			process.env.GOOGLE_CLIENT_SECRET,
+// 			'http://localhost:8080/callback'
+// 		);
+
+// 		console.log(oauth2Client);
+// 		const scopes = 'https://www.googleapis.com/auth/spreadsheets';
+// 		const state = generateRandomString(16);
+
+// 		//generate a code_verifier and code_challenge
+// 		// const codes = await OAuth2Client.generateCodeVerifierAsync();
+// 		// console.log('the codes are ', codes);
+
+// 		//passes in an options object to generateAuthUrl
+// 		const authUrl = oauth2Client.generateAuthUrl({
+// 			//recommended: indicates whether your app can refresh access tokens when the user is not present at the browser.  default is 'online', 'offline' is if your app needs to refresh access tokens when user is not present at browser
+// 			access_type: 'offline', //gets a refresh token
+// 			//required: identify resources that pp can access on user's behalf
+// 			scope: scopes,
+// 			state: state,
+// 			// 	response_type: code,
+// 			// 	//when using generateCodeVerifierAsync, make sure to use code_challenge_method 'S256';
+// 			// 	code_challenge_method: 'S256',
+// 			// 	//pass along the generated code challenge
+// 			// 	code_challenge: codes.codeChallenge,
+// 		});
+
+// 		console.log('auth url is ', authUrl);
+// 		res.locals.authUrl = authUrl;
+// 		next();
+// 	} catch (error) {
+// 		return next({
+// 			log: 'error in authController.createAuthUrl: ',
+// 			message: {
+// 				error: 'An error occured while redirecting to Google ',
+// 				error,
+// 			},
+// 		});
+// 	}
+// };
+// authController.handleCallback = async (req, res, next) => {
+// 	//let state = req.params.state;
+// 	let code = req.params.code;
+// 	console.log('Authorization code :', code);
+
+// 	const { tokens } = await oAuth2Client.getToken(code);
+//   oauth2Client.setCredentials(tokens);
+
+//   google.options({ auth: oauth2Client });
+
+// 		// const server = http
+// 		// 	.createServer(async (req, res) => {
+// 		// 		try {
+// 		// 			if (req.url.indexOf('/callback') > -1) {
+// 		// 				//acquire the authorization code on the request URL's search params object and extract the authorization code
+// 		// 				const qs = new URL(req.url, 'http://localhost:1111').searchParams;
+// 		// 				console.log('qs is ', qs);
+// 		// 				const code = qs.get('code');
+// 		// 				console.log('authorization code is ', code);
+// 		// 				//end response cycle and close the server
+// 		// 				//res.end('Authentication successful! Please return to the console.');
+// 		// 				server.destroy();
+
+// 		// 				//use authorization code to acquire tokens from authorization endpoint, passing along the generated code verifier that will match our code challenge
+// 		// 				const tokens = await oauth2Client.getToken({
+// 		// 					code,
+// 		// 					//codeVerifier: codes.codeVerifier,
+// 		// 				});
+
+// 						//set the credentials(tokens) returned from the endpoint on the client
+// 						oauth2Client.setCredentials(tokens.tokens);
+// 						console.log(tokens);
+//             res.locals.
+// 					}
+// 				} catch (error) {}
+// 			})
+// 			.listen(1111, () => {
+// 				opn(authUrl, { wait: false }).then((cp) => cp.unref());
+// 			});
+// 		destroyer(server);
+
+// };
 
 //
 // authController.initializeAuth = (req, res, next) => {
