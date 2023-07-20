@@ -26,7 +26,11 @@ async function authorize(req, res, next) {
   try {
     console.log('creating auth...');
     const auth = new GoogleAuth({
-      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+      scopes: [
+        'https://www.googleapis.com/auth/spreadsheets',
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.file',
+      ],
     });
     console.log('auth created. creating auth client...');
     const authClient = await auth.getClient();

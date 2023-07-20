@@ -14,7 +14,18 @@ router.post(
   sqlController.createTable,
   (req, res) => {
     res.status(200).json(res.locals.data);
-  },
+  }
+);
+
+//make a /new post request
+router.post(
+  '/new',
+  sqlController.linkDb, //establish connection to SQL database
+  gSheetsController.createSheet, //creates a new sheet
+  gSheetsController.updateSheet, //make a get request to populates the sheet with DB
+  (req, res) => {
+    res.status(200).json(res.locals.data); //send new sheet URL to user
+  }
 );
 
 //export router
