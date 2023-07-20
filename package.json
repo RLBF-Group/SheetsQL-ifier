@@ -1,7 +1,7 @@
 {
   "name": "scratch-project",
   "version": "1.0.0",
-  "description": "Welcome to the Google Sheets to SQL app.",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server/server.js",
