@@ -17,7 +17,7 @@ const App = () => {
         <div className="contentWrapper">
           <Routes>
           <Route path="/" element={<Signin />} />
-          <Route path="/redirect" element={<Callback />} />
+          <Route path="/callback" element={<Callback />} />
             <Route path="/form" exact element={<Form />}/>
             <Route path="/readme" exact element={<ReadMe />}/>
             <Route path="/about" exact element={<About />}/>

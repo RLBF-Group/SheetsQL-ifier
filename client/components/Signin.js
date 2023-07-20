@@ -37,6 +37,7 @@ export default function Signin(){
 
     //redirect user to google with the supplied Url 
     const handleRedirect = () => {
+        
         window.location.replace(url)
     }
 
