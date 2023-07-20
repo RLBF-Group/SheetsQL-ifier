@@ -56,7 +56,7 @@ const Form = props => {
   }
 
   const handleClick = e => {    
-    const url = '/api'
+    const url = '/api/sheets'
     fetch(url, { 
       method: 'POST',
       body: JSON.stringify({

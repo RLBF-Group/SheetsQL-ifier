@@ -1,21 +1,21 @@
-require('dotenv').config();
+const dotenv = require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
-const app = express();
-const gSheetsRouter = require('./routes/gSheetsRoutes.js');
-
+const cookieParser = require('cookie-parser');
 const { google } = require('googleapis');
 const sheets = google.sheets('v4');
 const { GoogleAuth } = require('google-auth-library');
 
-// initially request user authentication from Spotify
-// router.get('/', authController.initializeAuth, (req, res) => {
-//   console.log('reached authentication router.get redirect');
-//   return res.status(200).json(res.locals.reqAuthentication);
-// });
+const app = express();
+const PORT = 1111;
 
-// AUTHORIZATION BLOCK
+//require in routers
+const authRouter = require('./routes/authRouter.js');
+const gSheetsRouter = require('./routes/gSheetsRouter.js');
+
+// AUTHORIZATION BLOCK: authorizes the application in Google API
+
 let authCache; // holds auth client after the first time server authenticates
 
 // We authenticate using Application Default Credentials
@@ -47,15 +47,16 @@ async function authorize(req, res, next) {
 	}
 }
 
-const PORT = 1111;
-
-//HANDLE parsing body
+//HANDLE parsing incoming requests to JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(authorize);
 
-//route handler
-app.use('/api', gSheetsRouter);
+//establishing route handler
+//app.use('/api/authentication/callback', authRouter)
+app.use('/api/authentication', authRouter);
+app.use('/api/sheets', gSheetsRouter);
 
 //route catch
 app.use('*', (req, res) => res.sendStatus(404));
@@ -64,7 +65,7 @@ app.use('*', (req, res) => res.sendStatus(404));
 app.use((err, req, res, next) => {
 	const defaultErr = {
 		log: 'Express error handler caught unknown middleware error',
-		status: 500,
+		status: 400,
 		message: { err: 'An error occurred' },
 	};
 	const errorObj = Object.assign({}, defaultErr, err);
