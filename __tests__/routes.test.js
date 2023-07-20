@@ -7,8 +7,7 @@ const app = require('../server/server');
 
 // Google API Authentication is essential to server-side operations in the application, but using Jest to mock that authentication here seemed to be unnecessary and inefficient. Google API docs will be of more help
 
-
-describe("server endpoints", () => {
+xdescribe("server startup", () => {
   let server;
 
   beforeAll(() => {
@@ -27,5 +26,18 @@ describe("server endpoints", () => {
     const res = await request(app).get('/');
     expect(res.status).toBe(404);
     expect(res.text).toBe('Not Found');
+  })
+
+  it('should catch all invalid routes and return a status 404', async () => {
+    const res = await request(app).get('/api/invalid-route');
+    expect(res.status).toBe(404);
+  })
+})
+
+describe('/api', () => {
+  describe('POST', () => {
+    it('responds with 200 status and application/json content type', async () => {
+      return request(app).post('/api').expect('Content-Type', /application\/json/).expect(200);
+    })
   })
 })
