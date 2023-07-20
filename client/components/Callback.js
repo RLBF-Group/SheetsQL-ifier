@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { redirect } from 'react-router-dom';
+import { redirect, useParams } from 'react-router-dom';
 
 //once a user has given permissions on the consent page, if the user's credentials were authenticated by Google, Google redirects the user to the redirect URL we provided ('/callback') along with an authorization code query parameter on the URL
 //GET /oauthcallback?code={authorizationCode}
@@ -55,7 +55,7 @@ export default function Callback() {
             })
             const permission = await response.json();
 
-            if (permission === 'granted'){
+            if (permission.permissions === 'granted' && permission.access_token && permission.refresh_token){
                 console.log('login successful')
                 return redirect('/form');
             }

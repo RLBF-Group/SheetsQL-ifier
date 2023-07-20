@@ -52,14 +52,13 @@ const generateRandomString = function (length) {
 };
 
 const authController = {};
-
+let store = [];
 //this middleware function creates the oauth2 client as well as the url that will be used for the consent dialog
 
 authController.getOAuthClient = (req, res, next) => {
 	console.log('in authController getOathClient');
 	console.log(process.env.GOOGLE_CLIENT_ID);
 	console.log(process.env.GOOGLE_CLIENT_SECRET);
-	let store = [];
 	try {
 		if (!store[0]) {
 			const oauth2Client = new google.auth.OAuth2(
@@ -143,7 +142,9 @@ authController.handleCallback = async (req, res, next) => {
 		console.log('Authorization code :', code);
 
 		//!Wednesday night: this getToken is not working. when await is removed it properly console.logs a promise. once it did return the tokens outside of the deconstructed obj so i am assuming it has something to do with the number of requests in a span of time
+		console.log('1');
 		const { tokens } = await oauth2Client.getToken(code);
+		console.log('2')
 
 		//const { tokens } = await oauth2Client.getToken(code);
 		console.log(tokens);
@@ -151,7 +152,7 @@ authController.handleCallback = async (req, res, next) => {
 		oauth2Client.setCredentials(tokens);
 		console.log(oauth2Client.credentials);
 
-		res.locals.permission = 'granted';
+		res.locals.credentials = oauth2Client.credentials;
 		next();
 	} catch (error) {
 		return next({
