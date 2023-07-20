@@ -80,24 +80,31 @@ gSheetsController.createSheet = async (req, res, next) => {
   const request = {
     auth: auth,
   };
+  const { email } = req.body;
+  console.log('email is here', email)
+  console.log('req body', req)
   try {
     // console.log('hello world');
     // console.log('request!!!!!!!!!!', request);
-    const response = (await sheets.spreadsheets.create(request)).data;
+    //COMMENT BACK IN WHEN READY------
+   const response = (await sheets.spreadsheets.create(request)).data;
 
     //spreadsheet id
     console.log(response);
     // const spreadsheetID = sheets.spreadsheets.data.spreadsheetId;
     const spreadID = response.spreadsheetId;
     res.locals.sheetId = spreadID;
+    const sheetURL = response.spreadsheetUrl;
+    res.locals.sheetURL = sheetURL;
     // console.log(spreadsheetID);
     //create object with role and type
 
     const permission = {
       type: 'user',
       role: 'writer',
-      emailAddress: 'LASH211@gmail.com', // Please set the email address you want to give the permission.
+      emailAddress: email, // Please set the email address you want to give the permission.
     };
+    //COMMENT BACK IN WHEN READY-------
     const permissionResponse = await drive.permissions.create({
       auth: auth, //adding this and now we have a different error "insufficient permission"
       resource: permission,
@@ -107,15 +114,15 @@ gSheetsController.createSheet = async (req, res, next) => {
 
     /////I THINK ITS WORKING!!!! but im going to change it to my email .....
     ///// IT WORKS!!!!!!
-
-    console.log('THIS IS JUST RES, NO STRINGIFY', response);
+    next();
+    //console.log('THIS IS JUST RES, NO STRINGIFY', response);
     //console.log(JSON.stringify('THIS IS THE RESPONSE!!!!!', response, null, 2));
   } catch (err) {
     console.log(err, 'ERROR in createSheet');
     next(err);
   }
 
-  next();
+  
 };
 
 // const response = await gsapi.spreadsheets.create(request_);
@@ -141,11 +148,19 @@ gSheetsController.createSheet = async (req, res, next) => {
 gSheetsController.updateSheet = async (req, res, next) => {
   console.log('entered update sheet')
   const auth = res.locals.auth;
-const data = res.locals.value
-  
-const columnTitle = Object.keys(data[0])
+  const data = res.locals.value
+  const sheetID = res.locals.sheetId 
+// MOCK sheet ID:
+mockSheetID = '180Ir80nuDycvrQSYKbVJKdhGxTtM9DQ8M2HbxiJg5Ps'
 //console.log(columnTitle)
 
+
+// sqlDatabaseUrl: formData.sqlDatabaseUrl,
+// tableName: formData.tableName,
+// email: formData.email, 
+
+
+const columnTitle = Object.keys(data[0])
 const row0 = Object.values(data[0])
 //console.log(row0)
 
@@ -156,17 +171,22 @@ for (let i = 1; i<data.length; i++ ){
   // console.log('value of each row', Object.values(data[i]))
 }
 console.log('rt', restOftable)
-
+const rangeLetter = String.fromCharCode(columnTitle.length + 64);
+const rangeNumber = data.length+1;
+//data.length is 6 +1
+//data[0].length 
+console.log('Sheet1!A1:'+rangeLetter+rangeNumber)
+//String.fromCharCode(number + 64);
 
 // column titles: peach	apple	orange	banana	kiwi
 
 const request = {
-    spreadsheetId: '180Ir80nuDycvrQSYKbVJKdhGxTtM9DQ8M2HbxiJg5Ps',
+    spreadsheetId: mockSheetID,
     resource: {
       valueInputOption: 'RAW',
       data: [
         {
-          range: 'Sheet1!A1:E7', //required
+          range: 'Sheet1!A1:'+rangeLetter+rangeNumber, //required
           majorDimension: 'ROWS',
           values: restOftable
         },
@@ -178,6 +198,7 @@ const request = {
   try {
     const response = await sheets.spreadsheets.values.batchUpdate(request);
     console.log(JSON.stringify(response.data, null, 2));
+    next()
   } catch (err) {
     console.error(err);
   }

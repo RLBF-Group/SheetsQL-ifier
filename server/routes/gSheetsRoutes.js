@@ -25,7 +25,7 @@ router.post(
   // gSheetsController.createSheet, //creates a new sheet
   gSheetsController.updateSheet, //make a get request to populates the sheet with DB
   (req, res) => {
-    res.status(200).json(res.locals.data); //send new sheet URL to user
+    res.status(200).json(res.locals.sheetURL); //send new sheet URL to user
   }
 );
 

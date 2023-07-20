@@ -94,11 +94,12 @@ sqlController.createTable = async (req, res, next) => {
 };
 
 sqlController.readTable = async (req, res, next) => {
+  const {tableName} = req.body;
   
 try {
-  const text = `SELECT * FROM public.sheet1`;
+  const text = `SELECT * FROM ${tableName}`;
   const data = await db.query(text)
-  //console.log('here is the data', data.rows)
+  console.log('here is the data', data.rows)
   res.locals.value = data.rows
   next()
 }
