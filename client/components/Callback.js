@@ -20,36 +20,59 @@ export default function Callback() {
 	console.log('path: ', path);
 
 	//use authentication code in request query to get access/refresh tokens from Google
-	const getTokens = async () => {
-		try {
-			const response = await fetch(path, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'Application/JSON',
-				},
-			});
+	// const getTokens = async () => {
+	// 	try {
+	// 		const response = await fetch(path, {
+	// 			method: 'GET',
+	// 			headers: {
+	// 				'Content-Type': 'Application/JSON',
+	// 			},
+	// 		});
 
-			console.log('getTokens fetch response: ', response);
-			const accessToken = await response.json();
+	// 		console.log('getTokens fetch response: ', response);
+	// 		const accessToken = await response.json();
 
-			console.log('Access Token: ', accessToken);
-			console.log(typeof accessToken);
+	// 		console.log('Access Token: ', accessToken);
+	// 		console.log(typeof accessToken);
 
-			return redirect('/form');
-		} catch (error) {
-			console.log(
-				'Error when making fetch request to URL for access token and refresh token',
-				error
-			);
-		}
-	};
+	// 		return redirect('/form');
+	// 	} catch (error) {
+	// 		console.log(
+	// 			'Error when making fetch request to URL for access token and refresh token',
+	// 			error
+	// 		);
+	// 	}
+	// };
+
+    const handleCallback = async () => {
+        try {
+            const response = await fetch(path, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'Application/JSON'
+                }
+            })
+            const permission = await response.json();
+
+            if (permission === 'granted'){
+                console.log('login successful')
+                return redirect('/form');
+            }
+        } catch (error) {
+            console.log('Error, could not authenticate user with Google', error)
+        }
+
+    }
+
+
+
 
 	if (fetched === false) {
 		setFetched(true);
 	}
 
 	useEffect(() => {
-		getTokens();
+		handleCallback();
 	}, [fetched]);
 
 	return (
