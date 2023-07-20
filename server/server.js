@@ -18,8 +18,8 @@ const gSheetsRouter = require('./routes/gSheetsRouter.js');
 
 let authCache; // holds auth client after the first time server authenticates
 
-// We authenticate using Application Default Credentials
-// See README for details about setting up your server for ADC
+// We authenticate using Application Default Credentials (ADC)
+// *** See README for details about setting up your server for ADC ***
 // Make sure you place your service account credentials in a credentials.json file
 // in the /server directory. This file is ignored by git.
 async function authorize(req, res, next) {
