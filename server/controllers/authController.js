@@ -7,11 +7,6 @@ const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 const { oauth2 } = require('googleapis/build/src/apis/oauth2');
 const path = require('path');
-const http = require('http');
-const url = require('url');
-const opn = require('open');
-const destroyer = require('server-destroy');
-const destroy = require('destroy');
 require('dotenv').config();
 
 //We are requesting authorization from the user so our app can access their Google Sheets.  Our app must build and send a GET request to the /authorize endpoint with the following parameters:
@@ -150,9 +145,7 @@ authController.handleCallback = async (req, res, next) => {
 		console.log(tokens);
 		//have not yet been able to test this. passing in tokens or tokens.tokens
 		oauth2Client.setCredentials(tokens);
-		console.log(oauth2Client.credentials);
-
-		res.locals.credentials = oauth2Client.credentials;
+		console.log(oauth2Client);
 		next();
 	} catch (error) {
 		return next({
@@ -164,6 +157,24 @@ authController.handleCallback = async (req, res, next) => {
 		});
 	}
 };
+
+// authController.apiCall = async (req, res, next) => {
+// 	try {
+// 		const accessToken = res.locals.credentials['access_token'];
+
+// 		const confirmation = await fetch('https://sheets.googleapis.com', {
+// 			method: 'POST',
+// 			Authorization: accessToken,
+// 		})
+
+// 		console.log(confirmation);
+
+		
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+
+// }
 
 // authController.initializeAuth = async (req, res, next) => {
 // 	console.log('in authController createAuthUrl');

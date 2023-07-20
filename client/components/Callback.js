@@ -17,7 +17,7 @@ export default function Callback() {
 	const index = href.indexOf('callback');
 	//append authorization code to the path for the GET request for user's access/refresh tokens
 	const path = '/api/authentication/' + href.slice(index);
-	console.log('path: ', path);
+	// console.log('path: ', path);
 
 	//use authentication code in request query to get access/refresh tokens from Google
 	// const getTokens = async () => {
@@ -49,16 +49,17 @@ export default function Callback() {
             const response = await fetch(path, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'Application/JSON'
+                    'Content-Type': 'application/json'
                 }
                 
             })
-            const permission = await response.json();
-
-            if (permission.permissions === 'granted' && permission.access_token && permission.refresh_token){
-                console.log('login successful')
-                return redirect('/form');
-            }
+            // const permission = await response.json();
+						
+			// 			console.log('in callback component')
+            // if (permission.status === 200){
+            //     console.log('login successful')
+            //     return redirect('/form');
+            //}
         } catch (error) {
             console.log('Error, could not authenticate user with Google', error)
         }
