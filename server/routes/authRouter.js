@@ -7,9 +7,9 @@ const authController = require('../controllers/authController.js');
 
 const authRouter = express.Router();
 
-authRouter.post('/callback', authController.getOAuthClient, authController.handleCallback, (req, res) => {
+authRouter.post('/callback', authController.getOAuthClient, authController.handleCallback, authController.apiCall, (req, res) => {
 	console.log('reached authRouter.get to handleCallback ');
-	return res.status(200).json(res.locals.credentials);
+	return res.status(200);
 });
 
 //this request generates the authorization URL, which is returned out on the response body and provided to the front end where the user is redirected to the URL.
