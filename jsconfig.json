@@ -1,0 +1,9 @@
+// gives VSCode autocomplete for jest types
+// installed npm modules 'jest' and '@types/jest' to use
+{
+  "typeAcquisition": {
+    "include": [
+      "jest"
+    ]
+  }
+}
