@@ -149,8 +149,8 @@ const columnTitle = Object.keys(data[0])
 const row0 = Object.values(data[0])
 //console.log(row0)
 
-const restOftable = [...columnTitle, ...row0]
-
+const restOftable = []
+restOftable.push(columnTitle, row0)
 for (let i = 1; i<data.length; i++ ){
   restOftable.push(Object.values(data[i]))
   // console.log('value of each row', Object.values(data[i]))

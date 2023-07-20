@@ -5,6 +5,8 @@ import About from './components/About.js'
 import ReadMe from './components/ReadMe.js'
 import Output from './components/Output.js'
 import Form from './components/Form.js'
+import Home from './components/Home.js'
+import Reverse from './components/Reverse.js'
 import './styles/LandingPage.scss'
 
 
@@ -14,7 +16,9 @@ const App = () => {
       <Router>
         <div className="contentWrapper">
           <Routes>
-            <Route path="/" exact element={<Form />}/>
+             <Route path="/home" exact element={<Home />}/>
+            <Route path="/form" exact element={<Form />}/>
+            <Route path="/reverse" exact element={<Reverse />}/>
             <Route path="/readme" exact element={<ReadMe />}/>
             <Route path="/about" exact element={<About />}/>
             <Route path="/output" exact element={<Output />}/>
