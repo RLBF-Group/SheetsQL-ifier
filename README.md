@@ -1,4 +1,4 @@
-# scratch-project
+# SheetsQL-ifier!
 
 Welcome to the Google Sheets to SQL app.
 
