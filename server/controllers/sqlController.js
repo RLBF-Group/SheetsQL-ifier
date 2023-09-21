@@ -93,4 +93,24 @@ sqlController.createTable = async (req, res, next) => {
   return next();
 };
 
+sqlController.readTable = async (req, res, next) => {
+  const {tableName} = req.body;
+  
+try {
+  const text = `SELECT * FROM ${tableName}`;
+  const data = await db.query(text)
+  console.log('here is the data', data.rows)
+  res.locals.value = data.rows
+  next()
+}
+catch (err) {
+  console.log(err)
+}
+}
+
+
 module.exports = sqlController;
+
+
+// pool.query(text1)
+// .then(result => console.log(result))
